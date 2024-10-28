@@ -28,12 +28,14 @@
     },
     "plugins": [
       "expo-router",
-      "react-native-vision-camera",
-      {
-        "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera to take clear photos.",
-        "enableMicrophonePermission": true,
-        "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone to record better videos."
-      }
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera to take clear photos.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone to record better videos."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
