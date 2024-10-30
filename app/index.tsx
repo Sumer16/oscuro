@@ -8,6 +8,8 @@ import { Camera, useCameraDevice, useCameraDevices, useCameraPermission } from '
 
 import { ThemedText } from '@/components/ThemedText';
 import OscuroButton from '@/components/OscuroButton';
+import ZoomControls from '@/components/ZoomControls'
+import ExposureControls from '@/components/ExposureControls'
 
 export default function HomeScreen() {
   const router  = useRouter();
@@ -91,78 +93,94 @@ export default function HomeScreen() {
           </BlurView>
         </View>
 
-        {/* Camera Controls */}
-        <View style={{ flex: 1 }}>
-          {/* Top section */}
-          <View style={{ flex: 0.7 }}>
-            <ThemedText>Max FPS: {device.formats[0].maxFps}</ThemedText>
-            <ThemedText>Width: {device.formats[0].photoWidth} Height: {device.formats[0].photoHeight}</ThemedText>
-            <ThemedText>Camera: {device.name}</ThemedText>
-          </View>
-          
-          {/* Middle section */}
-          <View style={{ flex: 0.7, flexDirection: 'row', justifyContent: 'space-evenly' }}>
-            <OscuroButton
-              iconName={torch === 'on' ? 'flashlight' : 'flashlight-outline'}
-              onPress={() => setTorch((t) => (t === 'off' ? 'on' : 'off'))}
-              containerStyle={{ alignSelf: 'center' }}
+        {
+          showZoomControls ? (
+            <ZoomControls
+              setZoom={setZoom}
+              setShowZoomControls={setShowZoomControls}
+              zoom={zoom ?? 1}
             />
-            <OscuroButton
-              iconName={flash === 'on' ? 'flash-outline' : 'flash-off-outline'}
-              onPress={() => setFlash((f) => (f === 'off' ? 'on' : 'off'))}
-              containerStyle={{ alignSelf: 'center' }}
+          ) : showExposureControls ? (
+            <ExposureControls
+              setExposure={setExposure}
+              setShowExposureControls={setShowExposureControls}
+              exposure={exposure}
             />
-            <OscuroButton
-              iconName='camera-reverse-outline'
-              onPress={() => setCameraPosition((p) => (p === 'back' ? 'front' : 'back'))}
-              containerStyle={{ alignSelf: 'center' }}
-            />
-            <OscuroButton
-              iconName='image-outline'
-              onPress={() => {
-                const link = Platform.select({
-                  ios: 'photos-redirect://',
-                  android: 'content://media/external/images/media',
-                });
-                Linking.openURL(link!);
-              }}
-              containerStyle={{ alignSelf: 'center' }}
-            />
-            <OscuroButton
-              iconName='settings-outline'
-              onPress={() => router.push('/_sitemap')}
-              containerStyle={{ alignSelf: 'center' }}
-            />
-          </View>
+          ) : (
+            // Camera Controls
+            <View style={{ flex: 1, paddingTop: 20 }}>
+              {/* Top section */}
+              <View style={{ flex: 0.7 }}>
+                <ThemedText>Max FPS: {device.formats[0].maxFps}</ThemedText>
+                <ThemedText>Width: {device.formats[0].photoWidth} Height: {device.formats[0].photoHeight}</ThemedText>
+                <ThemedText>Camera: {device.name}</ThemedText>
+              </View>
+              
+              {/* Middle section */}
+              <View style={{ flex: 0.7, flexDirection: 'row', justifyContent: 'space-evenly' }}>
+                <OscuroButton
+                  iconName={torch === 'on' ? 'flashlight' : 'flashlight-outline'}
+                  onPress={() => setTorch((t) => (t === 'off' ? 'on' : 'off'))}
+                  containerStyle={{ alignSelf: 'center' }}
+                />
+                <OscuroButton
+                  iconName={flash === 'on' ? 'flash-outline' : 'flash-off-outline'}
+                  onPress={() => setFlash((f) => (f === 'off' ? 'on' : 'off'))}
+                  containerStyle={{ alignSelf: 'center' }}
+                />
+                <OscuroButton
+                  iconName='camera-reverse-outline'
+                  onPress={() => setCameraPosition((p) => (p === 'back' ? 'front' : 'back'))}
+                  containerStyle={{ alignSelf: 'center' }}
+                />
+                <OscuroButton
+                  iconName='image-outline'
+                  onPress={() => {
+                    const link = Platform.select({
+                      ios: 'photos-redirect://',
+                      android: 'content://media/external/images/media',
+                    });
+                    Linking.openURL(link!);
+                  }}
+                  containerStyle={{ alignSelf: 'center' }}
+                />
+                <OscuroButton
+                  iconName='settings-outline'
+                  onPress={() => router.push('/_sitemap')}
+                  containerStyle={{ alignSelf: 'center' }}
+                />
+              </View>
 
-          {/* Bottom section */}
-          <View
-            style={{
-              flex: 1.1,
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
-            }}
-          >
-            <OscuroButton
-              iconSize={40}
-              title='+/-'
-              onPress={() => setShowZoomControls((s) => !s)}
-              containerStyle={{ alignSelf: 'center' }}
-            />
+              {/* Bottom section */}
+              <View
+                style={{
+                  flex: 1.1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                  alignItems: 'center',
+                }}
+              >
+                <OscuroButton
+                  iconSize={40}
+                  title='+/-'
+                  onPress={() => setShowExposureControls((s) => !s)}
+                  containerStyle={{ alignSelf: 'center' }}
+                />
 
-            <TouchableHighlight onPress={takePicture}>
-              <FontAwesome5 name='dot-circle' size={55} color={'white'} />
-            </TouchableHighlight>
+                <TouchableHighlight onPress={takePicture}>
+                  <FontAwesome5 name='dot-circle' size={55} color={'white'} />
+                </TouchableHighlight>
 
-            <OscuroButton
-              iconSize={40}
-              title='1x'
-              onPress={() => setShowExposureControls((s) => !s)}
-              containerStyle={{ alignSelf: 'center' }}
-            />
-          </View>
-        </View>
+                <OscuroButton
+                  iconSize={40}
+                  title={`${zoom}x`}
+                  onPress={() => setShowZoomControls((s) => !s)}
+                  containerStyle={{ alignSelf: 'center' }}
+                />
+              </View>
+            </View>
+          )
+        }
       </SafeAreaView>
     </>
   );
