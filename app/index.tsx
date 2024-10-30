@@ -1,10 +1,11 @@
 import { Redirect, useRouter } from 'expo-router';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, Platform, View, StatusBar, SafeAreaView } from 'react-native';
 import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
 
 import { ThemedText } from '@/components/ThemedText';
+import OscuroButton from '@/components/OscuroButton';
 
 export default function HomeScreen() {
   const router  = useRouter();
@@ -13,6 +14,11 @@ export default function HomeScreen() {
   const microphonePermission = Camera.getMicrophonePermissionStatus();
   const redirectToPermissions = !hasPermission || microphonePermission === 'not-determined';
   const device = useCameraDevice('back');
+
+  const [ zoom, setZoom ] = useState<number | undefined>(device?.neutralZoom);
+  const [ exposure, setExposure ] = useState<number>(0);
+  const [ flash, setFlash ] = useState<'off' | 'on'>('off');
+  const [ torch, setTorch ] = useState<'off' | 'on'>('off');
 
   if (redirectToPermissions) return <Redirect href={'/permissions'} />;
 
@@ -27,6 +33,10 @@ export default function HomeScreen() {
             style={{ flex: 1 }}
             device={device}
             isActive
+            resizeMode='cover'
+            exposure={exposure}
+            torch={torch}
+            zoom={zoom}
           />
         </View>
 
@@ -41,7 +51,10 @@ export default function HomeScreen() {
           
           {/* Bottom section */}
           <View style={{ flex: 0.7 }}>
-
+            <OscuroButton
+              iconName='flashlight'
+              onPress={() => {}}
+            />
           </View>
         </View>
       </SafeAreaView>
