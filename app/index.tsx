@@ -73,7 +73,7 @@ export default function HomeScreen() {
             torch={torch}
             zoom={zoom}
             photo={true}
-            video={true}
+            // video={true}
           />
           <BlurView
             intensity={100}
