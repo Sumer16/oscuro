@@ -1,12 +1,13 @@
+import { BlurView } from 'expo-blur';
 import { Redirect, useRouter } from 'expo-router';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import React, { useRef, useState } from 'react';
-import { Image, StyleSheet, Platform, View, StatusBar, SafeAreaView, Linking, Text } from 'react-native';
+import { StyleSheet, Platform, View, StatusBar, SafeAreaView, Linking, TouchableHighlight } from 'react-native';
 import { Camera, useCameraDevice, useCameraDevices, useCameraPermission } from 'react-native-vision-camera';
 
 import { ThemedText } from '@/components/ThemedText';
 import OscuroButton from '@/components/OscuroButton';
-import { BlurView } from 'expo-blur'
 
 export default function HomeScreen() {
   const router  = useRouter();
@@ -17,8 +18,11 @@ export default function HomeScreen() {
 
   const camera = useRef<Camera>(null);
   const devices = useCameraDevices();
+
   const [ cameraPosition, setCameraPosition ] = useState<'front' | 'back'>('back');
   const device = useCameraDevice(cameraPosition);
+  const [ showZoomControls, setShowZoomControls ] = useState<boolean>(false);
+  const [ showExposureControls, setShowExposureControls ] = useState<boolean>(false);
 
   const [ zoom, setZoom ] = useState<number | undefined>(device?.neutralZoom);
   const [ exposure, setExposure ] = useState<number>(0);
@@ -29,12 +33,36 @@ export default function HomeScreen() {
 
   if (!device) return <></>;
 
+  const takePicture = async () => {
+    try {
+      if (camera.current == null) throw new Error('Camera ref is null!');
+      console.log('Taking photo...');
+
+      const photo = await camera.current.takePhoto({
+        flash: flash,
+        enableShutterSound: false,
+      });
+      router.push({
+        pathname: '/media',
+        params: { media: photo.path, type: 'photo' },
+      });
+
+      // const video = await camera.current.startRecording({
+      //   onRecordingFinished: (video) => console.log(video),
+      //   onRecordingError: (error) => console.error(error), 
+      // });
+    } catch (error) {
+      console.error('Failed to take a photo!', error);
+    }
+  };
+
   return (
     <>
       <SafeAreaView style={styles.container}>
         {/* Camera view */}
         <View style={{ flex: 2, borderRadius: 10, overflow: 'hidden' }}>
           <Camera
+            ref={camera}
             style={{ flex: 1 }}
             device={device}
             isActive
@@ -42,6 +70,8 @@ export default function HomeScreen() {
             exposure={exposure}
             torch={torch}
             zoom={zoom}
+            photo={true}
+            video={true}
           />
           <BlurView
             intensity={100}
@@ -106,8 +136,31 @@ export default function HomeScreen() {
           </View>
 
           {/* Bottom section */}
-          <View>
+          <View
+            style={{
+              flex: 1.1,
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              alignItems: 'center',
+            }}
+          >
+            <OscuroButton
+              iconSize={40}
+              title='+/-'
+              onPress={() => setShowZoomControls((s) => !s)}
+              containerStyle={{ alignSelf: 'center' }}
+            />
 
+            <TouchableHighlight onPress={takePicture}>
+              <FontAwesome5 name='dot-circle' size={55} color={'white'} />
+            </TouchableHighlight>
+
+            <OscuroButton
+              iconSize={40}
+              title='1x'
+              onPress={() => setShowExposureControls((s) => !s)}
+              containerStyle={{ alignSelf: 'center' }}
+            />
           </View>
         </View>
       </SafeAreaView>
