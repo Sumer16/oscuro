@@ -4,12 +4,12 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import React, { useRef, useState } from 'react';
 import { StyleSheet, Platform, View, StatusBar, SafeAreaView, Linking, TouchableHighlight } from 'react-native';
-import { Camera, useCameraDevice, useCameraDevices, useCameraPermission } from 'react-native-vision-camera';
+import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
 
 import { ThemedText } from '@/components/ThemedText';
 import OscuroButton from '@/components/OscuroButton';
-import ZoomControls from '@/components/ZoomControls'
-import ExposureControls from '@/components/ExposureControls'
+import ZoomControls from '@/components/ZoomControls';
+import ExposureControls from '@/components/ExposureControls';
 
 export default function HomeScreen() {
   const router  = useRouter();
@@ -19,7 +19,6 @@ export default function HomeScreen() {
   const redirectToPermissions = !hasPermission || microphonePermission === 'not-determined';
 
   const camera = useRef<Camera>(null);
-  const devices = useCameraDevices();
 
   const [ cameraPosition, setCameraPosition ] = useState<'front' | 'back'>('back');
   const device = useCameraDevice(cameraPosition);
@@ -145,7 +144,7 @@ export default function HomeScreen() {
                   containerStyle={{ alignSelf: 'center' }}
                 />
                 <OscuroButton
-                  iconName='settings-outline'
+                  iconName='information-circle-outline'
                   onPress={() => router.push('/_sitemap')}
                   containerStyle={{ alignSelf: 'center' }}
                 />

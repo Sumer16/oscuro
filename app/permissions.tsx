@@ -123,26 +123,26 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   subtitle: {
-    textAlign: "center",
+    textAlign: 'center',
   },
   footnote: {
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     letterSpacing: 2,
   },
   row: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     gap: 6,
   },
   spacer: {
     marginVertical: 8,
   },
   permissionContainer: {
-    backgroundColor: "#ffffff20",
+    backgroundColor: '#ffffff20',
     borderRadius: 10,
     padding: 10,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   permissionText: {
     marginLeft: 10,
@@ -151,8 +151,8 @@ const styles = StyleSheet.create({
   continueButton: {
     padding: 10,
     borderWidth: 2,
-    borderColor: "white",
+    borderColor: 'white',
     borderRadius: 50,
-    alignSelf: "center",
+    alignSelf: 'center',
   },
 });

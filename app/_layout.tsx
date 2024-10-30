@@ -34,6 +34,7 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name='index' options={{ headerShown: false }} />
           <Stack.Screen name='+not-found' />
+          <Stack.Screen name='media' options={{ presentation: 'modal', headerTitle: 'Media' }} />
         </Stack>
       </ThemeProvider>
     </GestureHandlerRootView>
