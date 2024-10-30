@@ -1,11 +1,12 @@
 import { Redirect, useRouter } from 'expo-router';
 
-import React, { useState } from 'react';
-import { Image, StyleSheet, Platform, View, StatusBar, SafeAreaView } from 'react-native';
-import { Camera, useCameraDevice, useCameraPermission } from 'react-native-vision-camera';
+import React, { useRef, useState } from 'react';
+import { Image, StyleSheet, Platform, View, StatusBar, SafeAreaView, Linking, Text } from 'react-native';
+import { Camera, useCameraDevice, useCameraDevices, useCameraPermission } from 'react-native-vision-camera';
 
 import { ThemedText } from '@/components/ThemedText';
 import OscuroButton from '@/components/OscuroButton';
+import { BlurView } from 'expo-blur'
 
 export default function HomeScreen() {
   const router  = useRouter();
@@ -13,7 +14,11 @@ export default function HomeScreen() {
   const { hasPermission } = useCameraPermission();
   const microphonePermission = Camera.getMicrophonePermissionStatus();
   const redirectToPermissions = !hasPermission || microphonePermission === 'not-determined';
-  const device = useCameraDevice('back');
+
+  const camera = useRef<Camera>(null);
+  const devices = useCameraDevices();
+  const [ cameraPosition, setCameraPosition ] = useState<'front' | 'back'>('back');
+  const device = useCameraDevice(cameraPosition);
 
   const [ zoom, setZoom ] = useState<number | undefined>(device?.neutralZoom);
   const [ exposure, setExposure ] = useState<number>(0);
@@ -38,6 +43,22 @@ export default function HomeScreen() {
             torch={torch}
             zoom={zoom}
           />
+          <BlurView
+            intensity={100}
+            tint='default'
+            style={{
+              flex: 1,
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              padding: 10,
+            }}
+            experimentalBlurMethod='dimezisBlurView'
+          >
+            <ThemedText style={{ fontSize: 14, lineHeight: 22 }}>
+              Exposure: {exposure} | Zoom: x{zoom}
+            </ThemedText>
+          </BlurView>
         </View>
 
         {/* Camera Controls */}
@@ -49,12 +70,44 @@ export default function HomeScreen() {
             <ThemedText>Camera: {device.name}</ThemedText>
           </View>
           
-          {/* Bottom section */}
-          <View style={{ flex: 0.7 }}>
+          {/* Middle section */}
+          <View style={{ flex: 0.7, flexDirection: 'row', justifyContent: 'space-evenly' }}>
             <OscuroButton
-              iconName='flashlight'
-              onPress={() => {}}
+              iconName={torch === 'on' ? 'flashlight' : 'flashlight-outline'}
+              onPress={() => setTorch((t) => (t === 'off' ? 'on' : 'off'))}
+              containerStyle={{ alignSelf: 'center' }}
             />
+            <OscuroButton
+              iconName={flash === 'on' ? 'flash-outline' : 'flash-off-outline'}
+              onPress={() => setFlash((f) => (f === 'off' ? 'on' : 'off'))}
+              containerStyle={{ alignSelf: 'center' }}
+            />
+            <OscuroButton
+              iconName='camera-reverse-outline'
+              onPress={() => setCameraPosition((p) => (p === 'back' ? 'front' : 'back'))}
+              containerStyle={{ alignSelf: 'center' }}
+            />
+            <OscuroButton
+              iconName='image-outline'
+              onPress={() => {
+                const link = Platform.select({
+                  ios: 'photos-redirect://',
+                  android: 'content://media/external/images/media',
+                });
+                Linking.openURL(link!);
+              }}
+              containerStyle={{ alignSelf: 'center' }}
+            />
+            <OscuroButton
+              iconName='settings-outline'
+              onPress={() => router.push('/_sitemap')}
+              containerStyle={{ alignSelf: 'center' }}
+            />
+          </View>
+
+          {/* Bottom section */}
+          <View>
+
           </View>
         </View>
       </SafeAreaView>
