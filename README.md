@@ -1,20 +1,53 @@
-# Welcome to your Expo app 👋
+# Oscuro | Obscura clone
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Get started
+## About Oscuro
 
-1. Install dependencies
+Oscuro is a Obscura clone developed using React Native & Expo. It gives pro camera functionalities to a device's camera by using the popular React Native Vision Camera package.
 
-   ```bash
-   npm install
-   ```
+<!--
+## Screenshots
 
-2. Start the app
+<table>
+  <tr>
+    <td>
+      <img src="./dessin-1.png" width=250 height=544 alt="First Screenshot" />
+    </td>
+    <td>
+      <img src="./dessin-2.png" width=250 height=544 alt="Second Screenshot" />
+    </td>
+  </tr>
+</table>
+-->
 
-   ```bash
-    npx expo start
-   ```
+## Installation
+
+__Before you start the installation just a little note, this app only runs on a real device since it makes use of the camera, to do so make a dev build and run it on a real device.__
+
+### Clone the repository
+To get started, you'll need to clone this repository to your local machine. You can do this by running the following in the command line:
+
+```bash 
+git clone https://github.com/Sumer16/dessin.git 
+```
+
+### Install dependencies
+
+Once you've cloned the repository, navigate to the project directory and run npm/yarn install to install all the necessary dependencies.
+
+```bash
+cd dessin
+npm install
+```
+
+### Run the App
+
+After the dependencies have been installed, you can run the app in dev mode by running:
+
+```bash
+npx expo start
+```
 
 In the output, you'll find options to open the app in a
 
@@ -25,26 +58,33 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Get a fresh project
+Open your app in the [Expo Go app](https://expo.io) on your phone to view it. It will reload if you save edits to your files, and you will see build errors and logs in the terminal.
 
-When you're ready, run:
+If you want to run your application on an iOS simulator or a trusted iOS device then use these commands:
 
 ```bash
-npm run reset-project
+npx expo start --ios
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+If you want to run your application on an Android emulator or a connected device then use these commands:
+
+```bash
+npx expo start --android
+```
+
+If you want to run your application on the web then use these commands:
+
+```bash
+npx expo start --web
+```
+
+These commands are like `npm start` / `yarn start`, but attempts to open your app on a connected Android/iOS device or emulator/simulator or also on the web.
+
+NOTE: If you want to use these commands to run or deploy your app on a real device/hosting platform you will need to add a [development build](https://docs.expo.dev/develop/development-builds/introduction/) for each platform.
 
 ## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
+To learn more about developing your own project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with their [guides](https://docs.expo.dev/guides).
 - [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
