@@ -5,7 +5,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 ## About Oscuro
 
-Oscuro is a Obscura clone developed using React Native & Expo. It gives pro camera functionalities to a device's camera by using the popular React Native Vision Camera package. It works on both iOS & Android.
+Oscuro is a Obscura clone developed using React Native & Expo. It gives pro camera functionalities to a device's camera for taking photos & videos by using the popular React Native Vision Camera package. It works on both iOS & Android.
 
 <!--
 ## Screenshots
